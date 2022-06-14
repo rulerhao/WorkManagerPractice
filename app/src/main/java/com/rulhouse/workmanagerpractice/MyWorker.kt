@@ -6,10 +6,27 @@ import android.util.Log
 import androidx.work.Data
 import androidx.work.Worker
 import androidx.work.WorkerParameters
+import com.rulhouse.evgawatcher.crawler.use_cases.CrawlerUseCases
+import kotlinx.coroutines.*
+import javax.inject.Inject
+import kotlin.coroutines.CoroutineContext
 
-class MyWorker(context: Context, params: WorkerParameters) : Worker(context, params){
+class MyWorker @Inject constructor(
+    context: Context,
+    params: WorkerParameters,
+    private val crawlerUseCases: CrawlerUseCases
+) : Worker(context, params){
+
     override fun doWork(): Result {
-        Log.d("doWork", "inputData " + inputData.getString("InputDataKey"))
+
+        val myScope = object:CoroutineScope{
+            override val coroutineContext: CoroutineContext
+                get() = Job()
+        }
+
+        myScope.launch {
+            Log.d("TestWorker", "GpuItems = ${crawlerUseCases.getGpuItems()}")
+        }
 
         val outputData = workDataOf("OutputDataKey" to "OutputDataValue")
 
