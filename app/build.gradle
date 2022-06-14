@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'dagger.hilt.android.plugin'
+    id 'kotlin-parcelize'
 }
 
 android {
@@ -73,6 +74,13 @@ dependencies {
     implementation "androidx.compose.material:material-icons-extended:1.1.1"
     implementation "androidx.hilt:hilt-navigation-compose:1.0.0"
 
+    // Room
+    implementation("androidx.room:room-runtime:$roomVersion")
+    // To use Kotlin annotation processing tool (kapt)
+    kapt("androidx.room:room-compiler:$roomVersion")
+    // optional - Kotlin Extensions and Coroutines support for Room
+    implementation("androidx.room:room-ktx:$roomVersion")
+
     // hilt
     implementation "com.google.dagger:hilt-android:$hiltVersion"
     kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
@@ -82,4 +90,17 @@ dependencies {
     implementation "androidx.activity:activity-ktx:1.4.0"
 
     implementation 'com.google.accompanist:accompanist-systemuicontroller:0.24.10-beta'
+
+    // Gson
+    implementation 'com.google.code.gson:gson:2.9.0'
+
+    // Jsoup
+    implementation 'org.jsoup:jsoup:1.15.1'
+
+    // Glide
+    implementation "com.github.skydoves:landscapist-glide:$landscapist_glide_version"
+
+    // Material 3
+    implementation "androidx.compose.material3:material3:1.0.0-alpha13"
+    implementation "androidx.compose.material3:material3-window-size-class:1.0.0-alpha13"
 }
