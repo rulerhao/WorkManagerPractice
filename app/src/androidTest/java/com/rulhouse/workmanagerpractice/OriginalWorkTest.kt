@@ -1,5 +1,6 @@
 package com.rulhouse.workmanagerpractice
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
@@ -7,21 +8,27 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.work.*
 import androidx.work.impl.utils.SynchronousExecutor
+import androidx.work.testing.TestWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+
 @RunWith(AndroidJUnit4::class)
-class BasicInstrumentationTest {
+class OriginalWorkTest {
 
     private lateinit var context: Context
+    private lateinit var executor: Executor
 
     @Before
     fun setup() {
         context = InstrumentationRegistry.getInstrumentation().targetContext
+        executor = Executors.newSingleThreadExecutor()
 
         val config = Configuration.Builder()
             .setMinimumLoggingLevel(Log.DEBUG)
@@ -38,7 +45,7 @@ class BasicInstrumentationTest {
         val input = workDataOf("OutputDataKey" to "OutputDataValue")
 
         // Create request
-        val request = PeriodicWorkRequestBuilder<MyWorker>(15, TimeUnit.MINUTES)
+        val request = PeriodicWorkRequestBuilder<MyOriginalWorker>(15, TimeUnit.MINUTES)
             .setInputData(input)
             .build()
 
@@ -54,5 +61,26 @@ class BasicInstrumentationTest {
         Log.d("TestTest", "Before Assert")
         // Assert
         assertThat(workInfo.state, `is`(WorkInfo.State.ENQUEUED))
+    }
+
+    @Test
+    fun testDoWorker() {
+        val worker = TestWorkerBuilder<MyOriginalWorker>(
+            context = context,
+            executor = executor
+        ).build()
+
+        val result = worker.doWork()
+        val outputData = workDataOf("OutputDataKey" to "OutputDataValue")
+        assertThat(result, `is`(ListenableWorker.Result.success()))
+    }
+
+    @SuppressLint("RestrictedApi")
+    fun workDataOf(vararg pairs: Pair<String, Any?>): Data {
+        val dataBuilder = Data.Builder()
+        for (pair in pairs) {
+            dataBuilder.put(pair.first, pair.second)
+        }
+        return dataBuilder.build()
     }
 }
