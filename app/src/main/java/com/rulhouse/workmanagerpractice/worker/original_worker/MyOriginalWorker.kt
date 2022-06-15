@@ -1,4 +1,4 @@
-package com.rulhouse.workmanagerpractice
+package com.rulhouse.workmanagerpractice.worker.original_worker
 
 import android.content.Context
 import androidx.hilt.work.HiltWorker

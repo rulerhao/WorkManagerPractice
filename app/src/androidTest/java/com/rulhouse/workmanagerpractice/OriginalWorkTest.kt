@@ -1,6 +1,5 @@
 package com.rulhouse.workmanagerpractice
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.test.espresso.matcher.ViewMatchers.assertThat
@@ -10,6 +9,7 @@ import androidx.work.*
 import androidx.work.impl.utils.SynchronousExecutor
 import androidx.work.testing.TestWorkerBuilder
 import androidx.work.testing.WorkManagerTestInitHelper
+import com.rulhouse.workmanagerpractice.worker.original_worker.MyOriginalWorker
 import org.hamcrest.CoreMatchers.`is`
 import org.junit.Before
 import org.junit.Test
@@ -71,16 +71,6 @@ class OriginalWorkTest {
         ).build()
 
         val result = worker.doWork()
-        val outputData = workDataOf("OutputDataKey" to "OutputDataValue")
         assertThat(result, `is`(ListenableWorker.Result.success()))
-    }
-
-    @SuppressLint("RestrictedApi")
-    fun workDataOf(vararg pairs: Pair<String, Any?>): Data {
-        val dataBuilder = Data.Builder()
-        for (pair in pairs) {
-            dataBuilder.put(pair.first, pair.second)
-        }
-        return dataBuilder.build()
     }
 }

@@ -1,13 +1,13 @@
 package com.rulhouse.workmanagerpractice
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.work.*
-import com.rulhouse.evgawatcher.crawler.use_cases.CrawlerUseCases
+import com.rulhouse.workmanagerpractice.worker.original_worker.MyOriginalWorker
 import com.rulhouse.workmanagerpractice.work_manager.use_cases.WorkManagerUseCases
+import com.rulhouse.workmanagerpractice.worker.coroutine_work.MyWorker
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -19,30 +19,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        workManagerUseCases.setPeriodicWork()
-
-        setContent {
-//            val constraints = Constraints.Builder()
-//                .setRequiredNetworkType(NetworkType.CONNECTED)
-//                .build()
-//
-//            val request = PeriodicWorkRequest.Builder(MyWorker::class.java, 15, TimeUnit.MINUTES)
-//                .setConstraints(constraints)
-//                .build()
-//
-////            WorkManager.getInstance(this).enqueue(request)
-//            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-//                "sendLogs",
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                request
-//            )
-//            WorkManager.getInstance(this).enqueueUniquePeriodicWork(
-//                "sendLogs2",
-//                ExistingPeriodicWorkPolicy.KEEP,
-//                request
-//            )
-//            WorkManager.getInstance(this).cancelUniqueWork("sendLogs")
-//            WorkManager.getInstance(this).cancelUniqueWork("sendLogs2")
-        }
+//        workManagerUseCases.setPeriodicWork()
+        workManagerUseCases.setWork(MyWorker::class.java)
+//        workManagerUseCases.setWork(MyOriginalWorker::class.java)
     }
 }
