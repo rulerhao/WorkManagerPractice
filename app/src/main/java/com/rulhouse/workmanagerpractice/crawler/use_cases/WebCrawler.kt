@@ -13,7 +13,7 @@ class WebCrawler {
             var ans: List<GpuProduct>? = null
             withContext(Dispatchers.IO) {
                 try {
-                    val downloadUrl = "http://tw.evga.com/products/productlist.aspx?type=0"
+                    val downloadUrl = "https://tw.evga.com/products/productlist.aspx?type=0"
 
                     val itemsName = mutableListOf<String>()
                     val itemUrl = mutableListOf<String>()
