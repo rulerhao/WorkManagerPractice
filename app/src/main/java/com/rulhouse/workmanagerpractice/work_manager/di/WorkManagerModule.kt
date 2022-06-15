@@ -6,6 +6,7 @@ import com.rulhouse.workmanagerpractice.work_manager.impl.WorkManagerImpl
 import com.rulhouse.workmanagerpractice.work_manager.repository.WorkManagerRepository
 import com.rulhouse.workmanagerpractice.work_manager.use_cases.CancelPeriodicWork
 import com.rulhouse.workmanagerpractice.work_manager.use_cases.SetPeriodicWork
+import com.rulhouse.workmanagerpractice.work_manager.use_cases.SetWork
 import com.rulhouse.workmanagerpractice.work_manager.use_cases.WorkManagerUseCases
 import dagger.Module
 import dagger.Provides
@@ -34,6 +35,7 @@ object WorkManagerModule {
     @Singleton
     fun provideWorkManagerUseCases(repository: WorkManagerRepository): WorkManagerUseCases {
         return WorkManagerUseCases(
+            setWork = SetWork(repository),
             setPeriodicWork = SetPeriodicWork(repository),
             cancelPeriodicWork = CancelPeriodicWork(repository)
         )
